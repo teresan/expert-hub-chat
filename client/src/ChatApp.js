@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import NameBox from './NameBox.js';
+import {Container, Button, Input} from '@material-ui/core'
+import SendIcon from '@material-ui/icons/Send';
+import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from '@material-ui/core/styles';
+
+
 const Chat = require('twilio-chat');
+
 
 class ChatApp extends Component {
   constructor(props) {
@@ -18,7 +25,7 @@ class ChatApp extends Component {
     this.channelName = 'general';
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     if (this.state.loggedIn) {
       this.getToken();
     }
@@ -30,6 +37,7 @@ class ChatApp extends Component {
 
   logIn = event => {
     event.preventDefault();
+    console.log("inside login");
     if (this.state.name !== '') {
       localStorage.setItem('name', this.state.name);
       this.setState({ loggedIn: true }, this.getToken);
@@ -52,6 +60,8 @@ class ChatApp extends Component {
   };
 
   getToken = () => {
+    console.log("inside get token");
+
     fetch(`/token/${this.state.name}`, {
       method: 'POST'
     })
@@ -82,15 +92,17 @@ class ChatApp extends Component {
   }
 
   initChat = () => {
+    console.log(this.state.token);
     Chat.Client.create(this.state.token).then(client => {
       this.chatClient = client;
       this.clientInitiated()//.then(channel => {
-        console.log('here'+this.channel);
+        console.log('here: '+this.channel);
       this.setUpStudioWebhook(this.channel).then(channel => {
         console.log('webhook');
       });
       //this.chatClient.initialize().then(this.clientInitiated.bind(this));
-    });
+    })
+    .catch(e => console.log(e));
   };
 
   clientInitiated = () => {
@@ -140,6 +152,7 @@ class ChatApp extends Component {
   };
 
   onMessageChanged = event => {
+    console.log("change");
     this.setState({ newMessage: event.target.value });
   };
 
@@ -167,27 +180,34 @@ class ChatApp extends Component {
     });
     if (this.state.loggedIn) {
       loginOrChat = (
-        <div>
-          <p><i>Logged in as {this.state.name}</i></p>
+        <Container>
+          
           <ul className="messages">
             {messages}
           </ul>
-          <form onSubmit={this.sendMessage}>
-            <label htmlFor="message">Message: </label>
-            <input
+         
+          <Container fluid  onSubmit={this.sendMessage}>
+            <Input
               type="text"
               name="message"
               id="message"
               onChange={this.onMessageChanged}
               value={this.state.newMessage}
+              placeholder="your message here"
             />
-            <button>Send</button>
-          </form>
+           
+            <span className="button-container">
+              <IconButton type="submit" color="secondary" disableElevation onClick={this.sendMessage} aria-label="send">
+                  <SendIcon fontSize="small" color="primary" />
+              </IconButton>
+            </span>
+         </Container>
           <br /><br />
-          <form onSubmit={this.logOut}>
-            <button>Log out</button>
-          </form>
-        </div>
+          <div><i>Logged in as {this.state.name}</i></div>
+          
+          <Button  variant="contained" color="secondary" disableElevation onClick={this.logOut}>LOG OUT</Button>
+          
+        </Container>
       );
     } else {
       loginOrChat = (

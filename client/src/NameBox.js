@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {FormControl, Button, Input} from '@material-ui/core'
 
 class NameBox extends Component {
   render() {
@@ -7,17 +8,21 @@ class NameBox extends Component {
     const logIn = this.props.logIn;
     return (
       <div>
-        <form onSubmit={logIn}>
-          <label htmlFor="name">Name: </label>
-          <input
+        <FormControl>
+          
+          <Input
             type="text"
             name="name"
             id="name"
             onChange={onNameChanged}
             value={name}
+            placeholder="Name"
+            autoFocus={true}
+
           />
-          <button type="submit">Log in</button>
-        </form>
+         <br></br>
+          <Button  variant="contained" color="primary" disableElevation onClick={logIn}>LOG IN</Button>
+        </FormControl>
       </div>
     );
   }

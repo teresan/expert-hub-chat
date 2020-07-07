@@ -7,7 +7,7 @@ class App extends Component {
     return (
       <div className="App">
         <header>
-          
+          Expert Hub
         </header>
         <ChatApp />
       </div>

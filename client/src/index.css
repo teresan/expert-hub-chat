@@ -1,5 +1,8 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: verdana, sans-serif;
+  text-align: center;
+  background-color:#31aeb5;
+  color: white;
 }

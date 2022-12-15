@@ -19,7 +19,7 @@
     "child-process": "1.0.2",
     "express": "^4.17.1",
     "twilio": "^3.43.1",
-    "twilio-chat": "^3.4.0"
+    "twilio-chat": "^6.0.0"
   },
   "devDependencies": {
     "concurrently": "^3.4.0",
